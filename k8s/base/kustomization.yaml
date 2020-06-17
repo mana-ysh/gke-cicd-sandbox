@@ -1,0 +1,8 @@
+namespace: default
+namePrefix: "exampleapp-"
+commonLabels:
+    app: exampleapp
+resources:
+- configmap.yaml
+- deployment.yaml
+- service.yaml

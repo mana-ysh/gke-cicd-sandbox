@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "exampleapp"
+version = "0.1.0"
+description = "example"
+authors = ["mana-ysh <int.toshi13@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+dacite = "^1.5.0"
+pyyaml = "^5.3.1"
+fastapi = "^0.55.1"
+uvicorn = "^0.11.5"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^3.7.9"
+mypy = "^0.770"
+pytest = "^5.4.1"
+pytest-cov = "^2.8.1"
+black = "^19.10b0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

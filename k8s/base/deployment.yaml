@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+spec:
+  selector:
+    matchLabels:
+      app: exampleapp
+  replicas: 2
+  template:
+    spec:
+      containers:
+      - name: exampleapp
+        image: exampleapp
+        imagePullPolicy: Never
+        livenessProbe:
+            httpGet:
+                port: 8000
+                path: /health
+        readinessProbe:
+            httpGet:
+                port: 8000
+                path: /health
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: configmap
