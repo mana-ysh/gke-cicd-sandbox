@@ -30,6 +30,20 @@ test:
 	@echo testing
 	pytest -rf --cov=./exampleapp 
 
+##### gcp
+# NOTE: please set your configulation
+PROJECT_ID := dummy
+GKE_CLUSTER := dummy
+GKE_ZONE := dummy
+TAG := latest
+
+init-gcp:
+	gcloud --quiet auth configure-docker
+	gcloud container clusters get-credentials ${GKE_CLUSTER} --zone ${GKE_ZONE}
+
+push-image:
+	docker tag ${IMAGE_NAME} gcr.io/${PROJECT_ID}/${IMAGE_NAME}:${TAG}
+	docker push gcr.io/${PROJECT_ID}/${IMAGE_NAME}:${TAG}
 
 ##### k8s
 MANIFEST_PATH = $(shell pwd)/k8s
@@ -38,7 +52,6 @@ ENVIRONMENT := local
 deploy:
 	kubectl apply -k ${MANIFEST_PATH}/overlays/${ENVIRONMENT}/
 
-# TODO: prevent operation mistaken
 destory:
 	kubectl delete -k ${MANIFEST_PATH}/overlays/${ENVIRONMENT}/
 
