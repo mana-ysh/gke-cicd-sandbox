@@ -55,20 +55,15 @@ jobs:
         service_account_key: ${{ secrets.GKE_SA_KEY }}
         project_id: ${{ secrets.GKE_PROJECT }}
     # Configure GCP (docker and GKE)
-    - env: 
-        GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
-        GKE_ZONE: ${{ secrets.GKE_ZONE }} 
-      run: |-
+    - run: |-
         make init-gcp GKE_CLUSTER=$GKE_CLUSTER GKE_ZONE=$GKE_ZONE
     # build docker image
     - run: |-
         make build-image
     # push the Docker image
     - name: push
-      env:
-        PROJECT_ID: ${{ secrets.GKE_PROJECT }}  
       run: |-
         make push-image PROJECT_ID=$PROJECT_ID
     - name: Deploy
       run: |-
-        make deploy ENVIRONMENT=gcp
+        make deploy ENVIRONMENT=$ENVIRONMENT
