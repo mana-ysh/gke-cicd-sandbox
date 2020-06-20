@@ -49,10 +49,12 @@ push-image:
 ##### k8s
 MANIFEST_PATH = $(shell pwd)/k8s
 ENVIRONMENT := local
+# path to kustomize cmd binary
+KUSTOMIZE := kustomize
 
 deploy:
-	cd ${MANIFEST_PATH}/overlays/${ENVIRONMENT}/ && kustomize edit set image ${CONTAINER_HOST}=${CONTAINER_HOST}:${TAG}
-	kustomize build ${MANIFEST_PATH}/overlays/${ENVIRONMENT}/ | kubectl apply -f -
+	cd ${MANIFEST_PATH}/overlays/${ENVIRONMENT}/ && ${KUSTOMIZE} edit set image ${CONTAINER_HOST}=${CONTAINER_HOST}:${TAG}
+	${KUSTOMIZE} build ${MANIFEST_PATH}/overlays/${ENVIRONMENT}/ | kubectl apply -f -
 
 destory:
 	kubectl delete -k ${MANIFEST_PATH}/overlays/${ENVIRONMENT}/
