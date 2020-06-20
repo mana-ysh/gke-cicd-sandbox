@@ -36,21 +36,23 @@ PROJECT_ID := dummy
 GKE_CLUSTER := dummy
 GKE_ZONE := dummy
 TAG := latest
+CONTAINER_HOST := gcr.io/${PROJECT_ID}/${IMAGE_NAME}
 
 init-gcp:
 	gcloud --quiet auth configure-docker
 	gcloud container clusters get-credentials ${GKE_CLUSTER} --zone ${GKE_ZONE}
 
 push-image:
-	docker tag ${IMAGE_NAME} gcr.io/${PROJECT_ID}/${IMAGE_NAME}:${TAG}
-	docker push gcr.io/${PROJECT_ID}/${IMAGE_NAME}:${TAG}
+	docker tag ${IMAGE_NAME} ${CONTAINER_HOST}:${TAG}
+	docker push ${CONTAINER_HOST}:${TAG}
 
 ##### k8s
 MANIFEST_PATH = $(shell pwd)/k8s
 ENVIRONMENT := local
 
 deploy:
-	kubectl apply -k ${MANIFEST_PATH}/overlays/${ENVIRONMENT}/
+	cd ${MANIFEST_PATH}/overlays/${ENVIRONMENT}/ && kustomize edit set image ${CONTAINER_HOST}=${CONTAINER_HOST}:${TAG}
+	kustomize build ${MANIFEST_PATH}/overlays/${ENVIRONMENT}/ | kubectl apply -f -
 
 destory:
 	kubectl delete -k ${MANIFEST_PATH}/overlays/${ENVIRONMENT}/
