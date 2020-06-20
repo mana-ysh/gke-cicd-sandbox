@@ -57,6 +57,9 @@ jobs:
     # Configure GCP (docker and GKE)
     - run: |-
         make init-gcp GKE_CLUSTER=$GKE_CLUSTER GKE_ZONE=$GKE_ZONE
+    # build docker image
+    - run: |-
+        make build-image
     # push the Docker image
     - name: push
       run: |-
