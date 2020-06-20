@@ -63,7 +63,7 @@ jobs:
     # push the Docker image
     - name: push
       run: |-
-        make push-image PROJECT_ID=$PROJECT_ID TAG=${TAG}
+        make push-image PROJECT_ID=$PROJECT_ID TAG=release$(date '+%Y%m%d').$GITHUB_SHA
     # Set up kustomize
     - name: Set up Kustomize
       run: |-
@@ -71,4 +71,4 @@ jobs:
         chmod u+x ./kustomize
     - name: Deploy
       run: |-
-        make deploy ENVIRONMENT=$ENVIRONMENT TAG=${TAG}
+        make deploy ENVIRONMENT=$ENVIRONMENT TAG=release$(date '+%Y%m%d').$GITHUB_SHA
