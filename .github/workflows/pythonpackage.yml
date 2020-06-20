@@ -71,4 +71,4 @@ jobs:
         chmod u+x ./kustomize
     - name: Deploy
       run: |-
-        make deploy KUSTOMIZE=$(pwd)/kustomize ENVIRONMENT=$ENVIRONMENT TAG=release$(date '+%Y%m%d').$GITHUB_SHA
+        make deploy KUSTOMIZE=$(pwd)/kustomize PROJECT_ID=$PROJECT_ID ENVIRONMENT=$ENVIRONMENT TAG=release$(date '+%Y%m%d').$GITHUB_SHA
